@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
-from app.models import Task
+from app.models import Task, User
 from app.schemas import Task_Create, TaskResponse
+from app.security import get_current_user
 
 router = APIRouter()
 
@@ -14,7 +15,7 @@ def get_db():
         db.close()
 
 @router.post("/tasks", response_model= TaskResponse)
-def create_task(task: Task_Create, db: Session = Depends(get_db)):
+def create_task(task: Task_Create, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     nova_task = Task(titulo = task.titulo, descricao=task.descricao)
     db.add(nova_task)
     db.commit()
@@ -22,11 +23,11 @@ def create_task(task: Task_Create, db: Session = Depends(get_db)):
     return nova_task
 
 @router.get("/tasks", response_model= list[TaskResponse])
-def get_tasks(db: Session = Depends(get_db)):
+def get_tasks(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return db.query(Task).all()
 
 @router.get("/tasks/{task_id}", response_model=TaskResponse)
-def get_task(task_id: int, db: Session = Depends(get_db)):
+def get_task(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     task = db.query(Task).filter(Task.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task não encontrada")
