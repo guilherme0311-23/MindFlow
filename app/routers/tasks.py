@@ -16,7 +16,7 @@ def get_db():
 
 @router.post("/tasks", response_model= TaskResponse)
 def create_task(task: Task_Create, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    nova_task = Task(titulo = task.titulo, descricao=task.descricao)
+    nova_task = Task(titulo = task.titulo, descricao=task.descricao, owner_id = current_user.id)
     db.add(nova_task)
     db.commit()
     db.refresh(nova_task)
@@ -24,11 +24,11 @@ def create_task(task: Task_Create, db: Session = Depends(get_db), current_user: 
 
 @router.get("/tasks", response_model= list[TaskResponse])
 def get_tasks(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    return db.query(Task).all()
+    return db.query(Task).filter(Task.owner_id == current_user.id).all()
 
 @router.get("/tasks/{task_id}", response_model=TaskResponse)
 def get_task(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    task = db.query(Task).filter(Task.id == task_id).first()
+    task = db.query(Task).filter(Task.id == task_id, Task.owner_id == current_user.id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task não encontrada")
     return task
