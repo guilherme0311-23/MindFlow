@@ -32,6 +32,7 @@ https://mindflow-production-5b68.up.railway.app/docs
 - Secure password hashing with bcrypt
 - User registration and login
 - Per-user task ownership
+- Full task CRUD (create, read, update, delete)
 - PostgreSQL persistence
 - Dockerized development
 - Production deployment on Railway
@@ -39,22 +40,19 @@ https://mindflow-production-5b68.up.railway.app/docs
 ---
 
 ## Architecture
-
-```
 Client
-   │
-   ▼
+│
+▼
 JWT Authentication
-   │
-   ▼
+│
+▼
 FastAPI
-   │
-   ▼
+│
+▼
 SQLAlchemy
-   │
-   ▼
+│
+▼
 PostgreSQL (Supabase)
-```
 
 ---
 
@@ -69,11 +67,13 @@ PostgreSQL (Supabase)
 
 ### Tasks
 
-| Method | Endpoint |
-|---------|----------|
-| GET | `/tasks` |
-| GET | `/tasks/{id}` |
-| POST | `/tasks` |
+| Method | Endpoint | Description | Auth |
+|--------|----------|--------------|------|
+| POST | `/tasks` | Create a new task | ✅ |
+| GET | `/tasks` | List the authenticated user's tasks | ✅ |
+| GET | `/tasks/{task_id}` | Retrieve a specific task | ✅ |
+| PATCH | `/tasks/{task_id}` | Partially update a task | ✅ |
+| DELETE | `/tasks/{task_id}` | Delete a task | ✅ |
 
 ---
 
@@ -105,16 +105,10 @@ docker compose up --build
 ```
 
 API available at:
-
-```
 http://localhost:8000
-```
 
 Swagger:
-
-```
 http://localhost:8000/docs
-```
 
 ---
 
@@ -171,9 +165,13 @@ Results:
 
 ✅ `POST /tasks`
 
+✅ `PATCH /tasks/{task_id}`
+
+✅ `DELETE /tasks/{task_id}`
+
 ✅ Authentication routes (not applicable)
 
-At the time of the audit, no Update/Delete routes existed.
+The same ownership pattern — filtering by `owner_id == current_user.id` and returning 404 (never 403) when a resource doesn't belong to the requester — was validated across the full CRUD, including the update and delete operations added after the initial audit. Each route was manually tested with two real user accounts to confirm that one user can never read, modify, or delete another user's tasks.
 
 No remaining ownership vulnerabilities were found.
 
@@ -190,7 +188,7 @@ Finding, fixing, and auditing this vulnerability is part of the engineering proc
 | Docker | ✅ |
 | Railway Deployment | ✅ |
 | Security Audit | ✅ |
-| Full CRUD | ⏳ |
+| Full CRUD | ✅ |
 | Landing Page | ⏳ |
 
 ---
