@@ -5,6 +5,11 @@ class Task_Create(BaseModel):
     titulo: str
     descricao: Optional[str] = None
 
+class TaskUpdate(BaseModel):
+    titulo: Optional[str] = None
+    descricao: Optional[str] = None
+    concluida: Optional[bool] = None
+
 class TaskResponse(BaseModel):
     id: int
     titulo: str
