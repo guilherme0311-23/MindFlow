@@ -2,6 +2,8 @@
 
 > A production-ready backend for an ADHD-first productivity platform, built with FastAPI, PostgreSQL, JWT authentication, Docker, and deployed on Railway.
 
+![Tests](https://img.shields.io/badge/tests-9%20passing-brightgreen)
+
 ## Live Demo
 
 🌐 **Production API**  
@@ -189,6 +191,8 @@ Finding, fixing, and auditing this vulnerability is part of the engineering proc
 | Railway Deployment | ✅ |
 | Security Audit | ✅ |
 | Full CRUD | ✅ |
+| Automated Testing (pytest) | ✅ |
+| CI/CD (GitHub Actions) | ⏳ |
 | Landing Page | ⏳ |
 
 ---
