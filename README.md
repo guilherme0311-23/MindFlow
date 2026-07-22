@@ -2,7 +2,7 @@
 
 > A production-ready backend for an ADHD-first productivity platform, built with FastAPI, PostgreSQL, JWT authentication, Docker, and deployed on Railway.
 
-![Tests](https://img.shields.io/badge/tests-9%20passing-brightgreen)
+![Tests](https://github.com/guilherme0311-23/MindFlow/actions/workflows/tests.yml/badge.svg)
 
 ## Live Demo
 
@@ -192,7 +192,7 @@ Finding, fixing, and auditing this vulnerability is part of the engineering proc
 | Security Audit | ✅ |
 | Full CRUD | ✅ |
 | Automated Testing (pytest) | ✅ |
-| CI/CD (GitHub Actions) | ⏳ |
+| CI/CD (GitHub Actions) | ✅ |
 | Landing Page | ⏳ |
 
 ---
