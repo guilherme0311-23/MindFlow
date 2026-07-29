@@ -1,18 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.database import SessionLocal
+from app.database import get_db
 from app.models import Task, User
 from app.schemas import Task_Create, TaskResponse, TaskUpdate
 from app.security import get_current_user
 
 router = APIRouter()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.post("/tasks", response_model= TaskResponse)
 def create_task(task: Task_Create, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
