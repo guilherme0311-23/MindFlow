@@ -179,6 +179,32 @@ No remaining ownership vulnerabilities were found.
 
 Finding, fixing, and auditing this vulnerability is part of the engineering process—not something to hide. This repository intentionally documents both the mistake and the solution.
 
+## From Manual Fix to Permanent Guardrail
+
+The fix above stopped the vulnerability at the code level — `owner_id` is
+now always derived from `current_user.id`, never from the client. But a
+manual fix only protects the code as it exists *today*. It does nothing
+to stop the same mistake from being reintroduced next month, by me or by
+anyone else touching this codebase.
+
+So the fix became a **test**, not just a patch.
+
+`test_ownership.py` (part of the automated suite below) spins up two
+independent users, has each one create a task, and asserts that neither
+can `GET`, `PATCH`, or `DELETE` the other's resource — every cross-user
+attempt must return `404`. This isn't a test that checks the feature
+works. It's a test that checks the *vulnerability doesn't come back*.
+
+That test now runs automatically via **GitHub Actions** on every push
+(see badge at the top of this README). In practice, this already paid
+off: while setting up the pipeline, it caught a dependency drift in
+`requirements.txt` and an initialization bug (code that only worked
+because it happened to run at import time, not at request time) — both
+invisible locally, both caught before reaching production.
+
+A security fix without a regression test is a guess about the future.
+A security fix *with* one is a guarantee.
+
 ---
 
 # Roadmap
