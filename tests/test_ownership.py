@@ -37,3 +37,7 @@ def test_ownership_isolation(client):
 
     response = client.delete(f"/tasks/{task_id}", headers=headers_b)
     assert response.status_code == 404
+
+    response = client.get(f"/tasks/{task_id}", headers=headers_a)
+    assert response.status_code == 200
+    assert response.json()["titulo"] == "Task privada do usuário A"
