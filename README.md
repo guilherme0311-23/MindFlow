@@ -12,6 +12,8 @@ https://mindflow-production-5b68.up.railway.app
 📖 **Swagger Documentation**  
 https://mindflow-production-5b68.up.railway.app/docs
 
+![Swagger do MindFlow](docs/swagger.jpg)
+
 ---
 
 ## Tech Stack
