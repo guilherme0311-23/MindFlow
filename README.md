@@ -1,125 +1,136 @@
 # MindFlow
 
-> A production-ready backend for an ADHD-first productivity platform, built with FastAPI, PostgreSQL, JWT authentication, Docker, and deployed on Railway.
+> Um backend pronto para produção de uma plataforma de produtividade pensada primeiro para pessoas com TDAH, construído com FastAPI, PostgreSQL, autenticação JWT, Docker e publicado na Railway.
 
 ![Tests](https://github.com/guilherme0311-23/MindFlow/actions/workflows/tests.yml/badge.svg)
 
-## Live Demo
+## Demonstração ao vivo
 
-🌐 **Production API**  
+🌐 **API em produção**  
 https://mindflow-production-5b68.up.railway.app
 
-📖 **Swagger Documentation**  
+📖 **Documentação Swagger**  
 https://mindflow-production-5b68.up.railway.app/docs
 
 ![Swagger do MindFlow](docs/swagger.jpg)
 
-### Postman Collection
+> **Observação:** o banco de dados roda no plano gratuito do Supabase, que pausa projetos após um período de inatividade. Se a API em produção retornar erro 502, o banco provavelmente está pausado: restaure-o no painel do Supabase e faça um novo deploy na Railway.
 
-A ready-to-use Postman collection is available at [`docs/postman/MindFlow.postman_collection.json`](docs/postman/MindFlow.postman_collection.json).
+### Coleção do Postman
 
-Import it in Postman (**Import** → select the file). It covers:
-- `GET /health` with an automated status test
-- `POST /auth/register` and `POST /auth/login` (the token is saved automatically in a collection variable)
-- Protected routes: `GET /tasks` and `POST /tasks` using the saved Bearer token
+Uma coleção do Postman pronta para uso está em [`docs/postman/MindFlow.postman_collection.json`](docs/postman/MindFlow.postman_collection.json).
 
-Use your own test email and password in the Register and Login requests.
+Importe no Postman (**Import** → selecione o arquivo). Ela cobre:
+- `GET /health` com um teste automatizado de status
+- `POST /auth/register` e `POST /auth/login` (o token é salvo automaticamente em uma variável da coleção)
+- Rotas protegidas: `GET /tasks` e `POST /tasks` usando o Bearer token salvo
+
+Use seu próprio e-mail e senha de teste nas requisições Register e Login.
 
 ---
 
-## Tech Stack
+## Tecnologias
 
-| Category | Technology |
+| Categoria | Tecnologia |
 |----------|------------|
-| Language | Python |
+| Linguagem | Python |
 | Framework | FastAPI |
 | ORM | SQLAlchemy |
-| Database | PostgreSQL (Supabase) |
-| Authentication | JWT + bcrypt |
-| Containerization | Docker |
-| Deployment | Railway |
+| Banco de dados | PostgreSQL (Supabase) |
+| Autenticação | JWT + bcrypt |
+| Containerização | Docker |
+| Deploy | Railway |
 
 ---
 
-## Features
+## Funcionalidades
 
-- JWT authentication
-- Secure password hashing with bcrypt
-- User registration and login
-- Per-user task ownership
-- Full task CRUD (create, read, update, delete)
-- PostgreSQL persistence
-- Dockerized development
-- Production deployment on Railway
+- Autenticação com JWT
+- Hash seguro de senhas com bcrypt
+- Cadastro e login de usuários
+- Tarefas pertencentes a cada usuário (ownership)
+- CRUD completo de tarefas (criar, ler, atualizar, excluir)
+- Persistência em PostgreSQL
+- Ambiente de desenvolvimento com Docker
+- Deploy em produção na Railway
 
 ---
 
-## Architecture
-Client
-│
-▼
-JWT Authentication
-│
-▼
+## Arquitetura
+
+```
+Cliente
+   │
+   ▼
+Autenticação JWT
+   │
+   ▼
 FastAPI
-│
-▼
+   │
+   ▼
 SQLAlchemy
-│
-▼
+   │
+   ▼
 PostgreSQL (Supabase)
+```
 
 ---
 
-## API Endpoints
+## Endpoints da API
 
-### Authentication
+### Autenticação
 
-| Method | Endpoint |
+| Método | Endpoint |
 |---------|----------|
-| POST | `/register` |
-| POST | `/login` |
+| POST | `/auth/register` |
+| POST | `/auth/login` |
 
-### Tasks
+### Saúde
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|--------------|------|
-| POST | `/tasks` | Create a new task | ✅ |
-| GET | `/tasks` | List the authenticated user's tasks | ✅ |
-| GET | `/tasks/{task_id}` | Retrieve a specific task | ✅ |
-| PATCH | `/tasks/{task_id}` | Partially update a task | ✅ |
-| DELETE | `/tasks/{task_id}` | Delete a task | ✅ |
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/health` | Verifica se a API está no ar |
+
+### Tarefas
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| POST | `/tasks` | Cria uma nova tarefa | ✅ |
+| GET | `/tasks` | Lista as tarefas do usuário autenticado | ✅ |
+| GET | `/tasks/{task_id}` | Retorna uma tarefa específica | ✅ |
+| PATCH | `/tasks/{task_id}` | Atualiza parcialmente uma tarefa | ✅ |
+| DELETE | `/tasks/{task_id}` | Exclui uma tarefa | ✅ |
 
 ---
 
-## Running Locally
+## Rodando localmente
 
-Requirements:
+Requisitos:
 
 - Docker
 - Docker Compose
 
-Clone the repository:
+Clone o repositório:
 
 ```bash
 git clone https://github.com/guilherme0311-23/MindFlow.git
 cd MindFlow
 ```
 
-Create a `.env` file:
+Crie um arquivo `.env`:
 
 ```env
-DATABASE_URL=your_postgres_connection_string
-SECRET_KEY=your_jwt_secret_key
+DATABASE_URL=sua_string_de_conexao_postgres
+SECRET_KEY=sua_chave_secreta_jwt
 ```
 
-Run:
+Execute:
 
 ```bash
 docker compose up --build
 ```
 
-API available at:
+API disponível em:
 http://localhost:8000
 
 Swagger:
@@ -127,52 +138,52 @@ http://localhost:8000/docs
 
 ---
 
-# About
+# Sobre
 
-MindFlow is both a real product and a backend engineering portfolio project.
+O MindFlow é, ao mesmo tempo, um produto real e um projeto de portfólio de engenharia de backend.
 
-It is built by someone with ADHD, for people with ADHD. Every product decision reflects that perspective: low-friction onboarding, one task visible at a time, and AI-assisted decision making instead of superficial gamification.
+Ele é construído por uma pessoa com TDAH, para pessoas com TDAH. Cada decisão de produto reflete essa perspectiva: onboarding com pouco atrito, uma tarefa visível por vez e tomada de decisão assistida por IA, em vez de gamificação superficial.
 
-This repository contains the backend responsible for authentication, task management, authorization, and persistent storage.
-
----
-
-# Security Case Study
-
-One of the most valuable lessons in this project happened after deployment.
-
-While testing the production API with two real user accounts, I discovered a critical security issue.
-
-The endpoint responsible for listing tasks returned resources belonging to any authenticated user.
-
-Authentication correctly answered:
-
-> "Who is the user?"
-
-But the application never answered:
-
-> "Does this resource belong to this user?"
-
-This is a classic **IDOR (Insecure Direct Object Reference)** vulnerability.
-
-## Root Cause
-
-The `Task` model had no relationship with its owner.
-
-## Solution
-
-- Added `owner_id` as a foreign key referencing `users.id`
-- Ownership is always derived from `current_user.id`
-- The client never controls `owner_id`
-- Every task query is filtered by the authenticated owner
+Este repositório contém o backend responsável por autenticação, gerenciamento de tarefas, autorização e armazenamento persistente.
 
 ---
 
-## Security Audit
+# Estudo de caso de segurança
 
-After fixing the issue, every endpoint accessing resources by ID was audited.
+Uma das lições mais valiosas deste projeto aconteceu depois do deploy.
 
-Results:
+Ao testar a API em produção com duas contas de usuário reais, descobri uma falha crítica de segurança.
+
+O endpoint responsável por listar tarefas retornava recursos pertencentes a qualquer usuário autenticado.
+
+A autenticação respondia corretamente:
+
+> "Quem é o usuário?"
+
+Mas a aplicação nunca respondia:
+
+> "Este recurso pertence a este usuário?"
+
+Essa é uma vulnerabilidade clássica de **IDOR (Insecure Direct Object Reference, ou Referência Direta Insegura a Objeto)**.
+
+## Causa raiz
+
+O modelo `Task` não tinha nenhuma relação com o seu dono.
+
+## Solução
+
+- Adicionei `owner_id` como chave estrangeira referenciando `users.id`
+- A propriedade é sempre derivada de `current_user.id`
+- O cliente nunca controla o `owner_id`
+- Toda consulta de tarefas é filtrada pelo dono autenticado
+
+---
+
+## Auditoria de segurança
+
+Depois de corrigir o problema, todos os endpoints que acessam recursos por ID foram auditados.
+
+Resultados:
 
 ✅ `GET /tasks`
 
@@ -184,60 +195,47 @@ Results:
 
 ✅ `DELETE /tasks/{task_id}`
 
-✅ Authentication routes (not applicable)
+✅ Rotas de autenticação (não se aplica)
 
-The same ownership pattern — filtering by `owner_id == current_user.id` and returning 404 (never 403) when a resource doesn't belong to the requester — was validated across the full CRUD, including the update and delete operations added after the initial audit. Each route was manually tested with two real user accounts to confirm that one user can never read, modify, or delete another user's tasks.
+O mesmo padrão de ownership, filtrando por `owner_id == current_user.id` e retornando 404 (nunca 403) quando o recurso não pertence a quem fez a requisição, foi validado em todo o CRUD, incluindo as operações de atualização e exclusão adicionadas depois da auditoria inicial. Cada rota foi testada manualmente com duas contas de usuário reais para confirmar que um usuário nunca consegue ler, modificar ou excluir as tarefas de outro.
 
-No remaining ownership vulnerabilities were found.
+Nenhuma vulnerabilidade de ownership restante foi encontrada.
 
-Finding, fixing, and auditing this vulnerability is part of the engineering process—not something to hide. This repository intentionally documents both the mistake and the solution.
+Encontrar, corrigir e auditar essa vulnerabilidade faz parte do processo de engenharia, não é algo a esconder. Este repositório documenta, de propósito, tanto o erro quanto a solução.
 
-## From Manual Fix to Permanent Guardrail
+## Da correção manual à proteção permanente
 
-The fix above stopped the vulnerability at the code level — `owner_id` is
-now always derived from `current_user.id`, never from the client. But a
-manual fix only protects the code as it exists *today*. It does nothing
-to stop the same mistake from being reintroduced next month, by me or by
-anyone else touching this codebase.
+A correção acima eliminou a vulnerabilidade no nível do código: o `owner_id` agora é sempre derivado de `current_user.id`, nunca do cliente. Mas uma correção manual só protege o código como ele existe *hoje*. Ela não impede que o mesmo erro seja reintroduzido no mês que vem, por mim ou por qualquer pessoa que mexa neste código.
 
-So the fix became a **test**, not just a patch.
+Então a correção virou um **teste**, e não apenas um remendo.
 
-`test_ownership.py` (part of the automated suite below) spins up two
-independent users, has each one create a task, and asserts that neither
-can `GET`, `PATCH`, or `DELETE` the other's resource — every cross-user
-attempt must return `404`. This isn't a test that checks the feature
-works. It's a test that checks the *vulnerability doesn't come back*.
+O `test_ownership.py` (parte da suíte automatizada abaixo) cria dois usuários independentes, faz cada um criar uma tarefa e verifica que nenhum dos dois consegue fazer `GET`, `PATCH` ou `DELETE` no recurso do outro: toda tentativa entre usuários deve retornar `404`. Não é um teste que verifica se a funcionalidade funciona. É um teste que verifica que a *vulnerabilidade não volta*.
 
-That test now runs automatically via **GitHub Actions** on every push
-(see badge at the top of this README). In practice, this already paid
-off: while setting up the pipeline, it caught a dependency drift in
-`requirements.txt` and an initialization bug (code that only worked
-because it happened to run at import time, not at request time) — both
-invisible locally, both caught before reaching production.
+Esse teste agora roda automaticamente via **GitHub Actions** a cada push (veja o selo no topo deste README). Na prática, isso já valeu a pena: ao montar o pipeline, ele pegou uma divergência de dependências no `requirements.txt` e um bug de inicialização (código que só funcionava porque rodava no momento do import, e não no momento da requisição). Os dois eram invisíveis localmente e foram pegos antes de chegar à produção.
 
-A security fix without a regression test is a guess about the future.
-A security fix *with* one is a guarantee.
+Uma correção de segurança sem teste de regressão é um palpite sobre o futuro.
+Uma correção de segurança *com* teste é uma garantia.
 
 ---
 
 # Roadmap
 
-| Stage | Status |
+| Etapa | Status |
 |--------|--------|
-| Backend Foundation | ✅ |
-| JWT Authentication | ✅ |
+| Base do backend | ✅ |
+| Autenticação JWT | ✅ |
 | Docker | ✅ |
-| Railway Deployment | ✅ |
-| Security Audit | ✅ |
-| Full CRUD | ✅ |
-| Automated Testing (pytest) | ✅ |
+| Deploy na Railway | ✅ |
+| Auditoria de segurança | ✅ |
+| CRUD completo | ✅ |
+| Testes automatizados (pytest) | ✅ |
 | CI/CD (GitHub Actions) | ✅ |
 | Landing Page | ⏳ |
 
 ---
 
-# Author
+# Autor
 
 **Guilherme Dias Lemos**
 
-Information Systems student passionate about backend engineering, software architecture, and building real-world applications while documenting the learning process.
+Estudante de Sistemas de Informação, apaixonado por engenharia de backend, arquitetura de software e por construir aplicações do mundo real documentando o processo de aprendizado.
