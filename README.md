@@ -14,6 +14,17 @@ https://mindflow-production-5b68.up.railway.app/docs
 
 ![Swagger do MindFlow](docs/swagger.jpg)
 
+### Postman Collection
+
+A ready-to-use Postman collection is available at [`docs/postman/MindFlow.postman_collection.json`](docs/postman/MindFlow.postman_collection.json).
+
+Import it in Postman (**Import** → select the file). It covers:
+- `GET /health` with an automated status test
+- `POST /auth/register` and `POST /auth/login` (the token is saved automatically in a collection variable)
+- Protected routes: `GET /tasks` and `POST /tasks` using the saved Bearer token
+
+Use your own test email and password in the Register and Login requests.
+
 ---
 
 ## Tech Stack
